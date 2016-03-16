@@ -1,0 +1,10 @@
+#Add Requirement Here
+Django==1.8.11
+django-registration-redux==1.1
+oauthlib==1.0.3
+PyJWT==1.4.0
+python-openid==2.2.5
+python-social-auth==0.2.7
+requests==2.9.1
+requests-oauthlib==0.6.1
+six==1.10.0
