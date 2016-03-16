@@ -126,6 +126,7 @@ if DEBUG:
     STATICFILES_DIRS = (
 
         os.path.join(BASE_DIR,'static','static'),
+        # os.path.join(BASE_DIR,'static','base'),
     )
 # Registration
 ACCOUNT_ACTIVATION_DAYS = 7
