@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
 <form method="post" action=".">
 
     {% csrf_token %}
@@ -8,3 +10,4 @@
 </form>
 
 <a href="{% url 'social:begin' 'facebook' %}">Login with facebook</a>
+{% endblock %}
