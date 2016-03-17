@@ -131,3 +131,7 @@ fabric.properties
 
 # SQLite Databases
 *.sqlite3
+
+#Compiled static files
+
+static/static-only/CACHE
