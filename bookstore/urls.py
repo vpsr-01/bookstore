@@ -18,7 +18,7 @@ from store import views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', views.index, name='index'),
+    url(r'^$', views.store, name='store'),
     url(r'^store/', include('store.urls'), name='store'),
     url(r'^accounts/', include('registration.backends.default.urls')),
     url('', include('social.apps.django_app.urls', namespace='social')),
