@@ -64,7 +64,7 @@ ROOT_URLCONF = 'bookstore.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'static', 'template')],
+        'DIRS': [os.path.join(BASE_DIR, 'static', '../store/template')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,14 +123,14 @@ STATIC_URL = '/static/'
 
 if DEBUG:
     # MEDIA_URL = '/media/'
-    STATIC_ROOT = os.path.join(BASE_DIR,'static','static-only')
+    STATIC_ROOT = os.path.join(BASE_DIR,'static/')
     # MEDIA_ROOT = os.path.join(BASE_DIR,'static','media')
 
-    STATICFILES_DIRS = (
-
-        os.path.join(BASE_DIR,'static', 'static'),
-        # os.path.join(BASE_DIR,'static','base'),
-    )
+    # STATICFILES_DIRS = (
+    #
+    #     os.path.join(BASE_DIR,'static','static'),
+    #     # os.path.join(BASE_DIR,'static','base'),
+    # )
 
 COMPRESS_ENABLED = True
 

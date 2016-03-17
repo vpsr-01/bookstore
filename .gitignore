@@ -134,4 +134,4 @@ fabric.properties
 
 #Compiled static files
 
-static/static-only/CACHE
+static/
