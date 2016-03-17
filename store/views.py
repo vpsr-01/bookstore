@@ -5,7 +5,7 @@ from .models import Book
 # Create your views here.
 
 def index(request):
-    return render(request, 'template.html')
+    return render(request, 'base.html')
 
 def store(request):
     count = Book.objects.all().count()

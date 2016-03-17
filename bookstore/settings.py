@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'registration',
     'bootstrap3',
     'bootstrap_themes',
+    'compressor',
     'store',
 )
 
@@ -131,6 +132,14 @@ if DEBUG:
         # os.path.join(BASE_DIR,'static','base'),
     )
 
+COMPRESS_ENABLED = True
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # other finders..
+    'compressor.finders.CompressorFinder',
+)
 
 # Registration
 ACCOUNT_ACTIVATION_DAYS = 7

@@ -4,11 +4,15 @@
 {% load staticfiles %}
 {% load bootstrap3 %}
 {% load bootstrap_themes %}
+{% load compress %}
 {% bootstrap_styles theme='simplex' type='min.css' %}
 
 {% block bootstrap3_extra_head %}
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
-    <link href={% static 'base/css/style.css' %} rel='stylesheet' type='text/css'>
+    {% compress css %}
+	 <link href="{% static 'base/css/style.css' %}" rel="stylesheet" type="text/css">
+	 {% endcompress%}
+{#    <link href={% static 'base/css/style.css' %} rel='stylesheet' type='text/css'>#}
 {% endblock %}
 {% block bootstrap3_title %}
     {% block title %}
@@ -26,11 +30,11 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="{% url 'index' %}" class="navbar-brand">Mystery Books</a>
+            <a href="{% url 'store' %}" class="navbar-brand">Mystery Books</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="hrv-curl-top-right"><a href="{% url 'index' %}">Home</a></li>
+                <li class="hrv-curl-top-right"><a href="{% url 'store' %}">Home</a></li>
                 <li class="hrv-curl-top-right"><a href="#about">About</a></li>
                 <li class="hrv-curl-top-right"><a href="#contact">Contact</a></li>
             </ul>
