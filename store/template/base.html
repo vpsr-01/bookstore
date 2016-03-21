@@ -7,20 +7,20 @@
 {% load compress %}
 {% bootstrap_styles theme='simplex' type='min.css' %}
 
-{% block bootstrap3_extra_head %}
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'
-          xmlns="http://www.w3.org/1999/html">
-    {% compress css %}
-	 <link href="{% static 'base/css/style.css' %}" rel="stylesheet" type="text/css">
-	 {% endcompress%}
-{#    <link href={% static 'base/css/style.css' %} rel='stylesheet' type='text/css'>#}
-{% endblock %}
-{% block bootstrap3_title %}
-    {% block title %}
-        Welcome to Mystery books!
+    {% block bootstrap3_extra_head %}
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'
+              xmlns="http://www.w3.org/1999/html">
+        {% compress css %}
+         <link href="{% static 'base/css/style.css' %}" rel="stylesheet" type="text/css">
+         {% endcompress%}
+    {#    <link href={% static 'base/css/style.css' %} rel='stylesheet' type='text/css'>#}
     {% endblock %}
-{% endblock %}
-{% block bootstrap3_content %}
+    {% block bootstrap3_title %}
+        {% block title %}
+            Welcome to Mystery books!
+        {% endblock %}
+    {% endblock %}
+    {% block bootstrap3_content %}
 
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -65,7 +65,7 @@
 	  <img src="{% static 'base/img/header_full.jpg' %}" class="bg"/>
 	  <div class="parallax">
 	    <div class="row">
-	     {% block body %}
+{% block body %}
 		 <div class="col-md-8 col-md-offset-2 col-sm-12 maincontent">
 		   <div style="text-align:center"><h3>Welcome to our store!</h3></div>
 		     {% for book in books %}
@@ -81,17 +81,23 @@
 			       <a href="{% url 'add_to_cart' book.id %}">[Add to Cart]</a>
 			   </span>
 			   {% endif %}
+
 			 </div>
 
 			 {% endfor%}
          </div>
-		 {% endblock %}
+
+{% endblock %}
 		</div>
 	  </div>
 	</div>
-	<div class="row text-center navbar footer">
-	  <div class="col-md-12">
-	     <p> 2015 Mystery Books </p>
-	  </div>
-	</div>
+        <footer class="footer">
+        <div class="container navbar  navbar-fixed-bottom">
+            <div class=" row text-center ">
+              <div class="col-md-12">
+                 <p> 2015 Mystery Books </p>
+              </div>
+            </div>
+        </div>
+        </footer>
 {% endblock %}
