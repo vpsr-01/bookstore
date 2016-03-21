@@ -6,12 +6,13 @@ import paypalrestsdk, stripe
 from django.http import JsonResponse
 
 
-from .models import Book, BookOrder, Cart
+from .models import Book, BookOrder, Cart, Review
+from .forms import ReviewForm
 
-# Create your views here.
 
 def index(request):
     return render (request, 'template.html')
+
 
 def store(request):
     books = Book.objects.all()
@@ -20,11 +21,30 @@ def store(request):
     }
     return render(request, 'base.html', context)
 
+
 def book_details(request, book_id):
-     context= {
-	      'book': Book.objects.get(pk=book_id),
-		  }
-     return render(request, 'store/detail.html', context)
+         book= Book.objects.get(pk=book_id)
+
+         context= {
+              'book': book,
+              }
+         if request.user.is_authenticated():
+                    if request.method== "POST":
+                        form= ReviewForm(request.POST)
+                        if form.is_valid():
+                            new_review= Review.objects.create(
+                                    user= request.user,
+                                    book= context['books'],
+                                    text=form.cleaned_data.get('text')
+                            )
+                            new_review.save()
+                    else:
+                        if Review.objects.filter(user=request.user, Book=context['book']).count() == 0:
+                            form= ReviewForm()
+                            context['form']= form
+         context['reviews']= book.review_set.all()
+         return render(request, 'store/detail.html', context)
+
 
 def add_to_cart(request,book_id):
         if request.user.is_authenticated():
@@ -45,6 +65,7 @@ def add_to_cart(request,book_id):
         else:
             return redirect('index')
 
+
 def remove_from_cart(request,book_id):
         if request.user.is_authenticated():
             try:
@@ -57,6 +78,7 @@ def remove_from_cart(request,book_id):
             return redirect('cart')
         else:
             return redirect('index')
+
 
 def cart(request):
         if request.user.is_authenticated():
@@ -77,24 +99,23 @@ def cart(request):
             return redirect('index')
 
 
-
-
 def checkout(request,processor):
-    if request.user.is_authenticated():
-        cart=Cart.objects.filter(user=request.user.id, active=True)
-        orders= BookOrder.objects.filter(cart=cart)
-        if processor== "paypal":
-                        redirect_url = checkout_paypal(request,cart,orders)
-                        return redirect(redirect_url)
-        elif processor== "stripe":
-                token = request.POST['stripeToken']
-                status= checkout_stripe(cart,orders,token)
-                if status:
-                   return redirect(reverse('process_order', args=['stripe']))
-                else:
-                   return redirect('order_error', context= {"message": "There was a problem processing your payment."})
-	else:
-	    return redirect('index')
+        if request.user.is_authenticated():
+            cart=Cart.objects.filter(user=request.user.id, active=True)
+            orders= BookOrder.objects.filter(cart=cart)
+            if processor== "paypal":
+                            redirect_url = checkout_paypal(request,cart,orders)
+                            return redirect(redirect_url)
+            elif processor== "stripe":
+                    token = request.POST['stripeToken']
+                    status= checkout_stripe(cart,orders,token)
+                    if status:
+                       return redirect(reverse('process_order', args=['stripe']))
+                    else:
+                       return redirect('order_error', context= {"message": "There was a problem processing your payment."})
+        else:
+            return redirect('index')
+
 
 def checkout_paypal(request,cart,orders):
         if request.user.is_authenticated():
@@ -138,6 +159,7 @@ def checkout_paypal(request,cart,orders):
         else:
             return redirect('index')
 
+
 def checkout_stripe(cart,orders,token):
         stripe.api_key = "*put in your stripe api_key*"
         total=0
@@ -165,24 +187,26 @@ def order_error(request):
         else:
             return redirect('index')
 
+
 def process_order(request,processor):
-        if request.user.is_authenticated():
-            if processor == "paypal":
-               payment_id= request.GET.get('paymentId')
-               cart= Cart.objects.filter(payment_id=payment_id)
-               orders= BookOrder.objects.filter(cart=cart)
-               total=0
-               for order in orders:
-                  total +=(order.book.price * order.quantity)
-               context= {
-                  'cart': orders,
-                  'total': total,
-                  }
-               return render(request, 'store/process_order.html', context)
-            elif processor== "stripe":
-		            return JsonResponse({'redirect_url': reverse('complete_order', args=['stripe'])})
-        else:
-            return redirect('index')
+            if request.user.is_authenticated():
+                    if processor == "paypal":
+                           payment_id= request.GET.get('paymentId')
+                           cart= Cart.objects.filter(payment_id=payment_id)
+                           orders= BookOrder.objects.filter(cart=cart)
+                           total=0
+                           for order in orders:
+                              total +=(order.book.price * order.quantity)
+                           context= {
+                              'cart': orders,
+                              'total': total,
+                              }
+                           return render(request, 'store/process_order.html', context)
+                    elif processor== "stripe":
+                            return JsonResponse({'redirect_url': reverse('complete_order', args=['stripe'])})
+            else:
+                return redirect('index')
+
 
 def complete_order(request,processor):
         if request.user.is_authenticated():
@@ -215,20 +239,3 @@ def complete_order(request,processor):
         else:
             return redirect('index')
 
-
-#----------------------------------------------------------------------------------------------------------------------
-
-# def index(request):
-#     return render(request, 'base.html')
-#
-# def store(request):
-#     count = Book.objects.all().count()
-#     context = {
-#
-#         'count':count,
-#
-#     }
-#     request.session['location'] = "unknown"
-#     if request.user.is_authenticated():
-#         request.session['location'] = "Earth"
-#     return render(request, 'base.html', context)
