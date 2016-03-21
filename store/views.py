@@ -211,7 +211,7 @@ def complete_order(request,processor):
                 context = {
                     'message': message,
                 }
-                return render (request, 'store/order_complete.html',cont  ext)
+                return render (request, 'store/order_complete.html',context)
         else:
             return redirect('index')
 
