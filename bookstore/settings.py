@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     # 'debug_toolbar.middleware.DebugToolbarMiddleware',
     'social.apps.django_app.default',
     'registration',
+    'paypalrestsdk',
     'bootstrap3',
     'bootstrap_themes',
     'compressor',
