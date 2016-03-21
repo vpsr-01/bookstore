@@ -14,6 +14,11 @@
          <link href="{% static 'base/css/style.css' %}" rel="stylesheet" type="text/css">
          {% endcompress%}
     {#    <link href={% static 'base/css/style.css' %} rel='stylesheet' type='text/css'>#}
+        <script src="https://ajax.googleapis.com/ajax/libs.jquery/2.1.4/jquery.min.js"></script>
+	    <script src="https://checkout.stripe.com/checkout.js"></script>
+	 {% compress js %}
+	 <script src="{% static 'base/js/jquery.cookie.js' %}"></script>
+	 {% endcompress %}
     {% endblock %}
     {% block bootstrap3_title %}
         {% block title %}
@@ -92,12 +97,12 @@
 	  </div>
 	</div>
         <footer class="footer">
-        <div class="container navbar  navbar-fixed-bottom">
-            <div class=" row text-center ">
-              <div class="col-md-12">
-                 <p> 2015 Mystery Books </p>
-              </div>
+            <div class="container navbar  navbar-fixed-bottom">
+                <div class=" row text-center ">
+                  <div class="col-md-12">
+                     <p> 2015 Mystery Books </p>
+                  </div>
+                </div>
             </div>
-        </div>
         </footer>
 {% endblock %}
